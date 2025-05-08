@@ -37,4 +37,9 @@ public class UserController {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping
+    public ResponseEntity<User> update(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok().body(userService.update(userDTO));
+    }
 }

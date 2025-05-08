@@ -28,11 +28,20 @@ public class UserService {
         User user = new User(userDTO.getId(), userDTO.getName(),userDTO.getPassword(),userDTO.getEmail());
         return userRepository.save(user);
     }
+
     public void delete(String id) {
         try {
             userRepository.deleteById(id);
         }catch(DataIntegrityViolationException e) {
             throw new DataBaseIntegrity("Database integrity violation");
+        }
+    }
+    public User update(UserDTO userDTO) {
+        if(userRepository.findById(userDTO.getId()).isEmpty()){
+         throw new ObjectNotFoundException("User not found for update");
+        }else {
+            User user = new User(userDTO.getId(), userDTO.getName(), userDTO.getPassword(), userDTO.getEmail());
+            return userRepository.save(user);
         }
     }
 }
