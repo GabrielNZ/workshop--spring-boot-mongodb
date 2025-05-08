@@ -5,6 +5,7 @@ import com.gabrielnz.workshopmongodb.domain.User;
 import java.io.Serializable;
 
 public class UserDTO implements Serializable {
+    private String id;
     private String name;
     private String password;
     private String email;
@@ -13,9 +14,14 @@ public class UserDTO implements Serializable {
 
     }
     public UserDTO(User user) {
+        this.id = user.getId();
         this.name = user.getName();
         this.password = user.getPassword();
         this.email = user.getEmail();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {

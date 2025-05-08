@@ -3,8 +3,10 @@ package com.gabrielnz.workshopmongodb.service;
 import com.gabrielnz.workshopmongodb.domain.User;
 import com.gabrielnz.workshopmongodb.dto.UserDTO;
 import com.gabrielnz.workshopmongodb.repository.UserRepository;
+import com.gabrielnz.workshopmongodb.service.exception.DataBaseIntegrity;
 import com.gabrielnz.workshopmongodb.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +25,14 @@ public class UserService {
     }
 
     public User save(UserDTO userDTO) {
-        User user = new User(null, userDTO.getName(),userDTO.getPassword(),userDTO.getEmail());
+        User user = new User(userDTO.getId(), userDTO.getName(),userDTO.getPassword(),userDTO.getEmail());
         return userRepository.save(user);
+    }
+    public void delete(String id) {
+        try {
+            userRepository.deleteById(id);
+        }catch(DataIntegrityViolationException e) {
+            throw new DataBaseIntegrity("Database integrity violation");
+        }
     }
 }
