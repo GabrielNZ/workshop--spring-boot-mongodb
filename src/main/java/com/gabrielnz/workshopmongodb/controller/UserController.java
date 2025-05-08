@@ -5,9 +5,7 @@ import com.gabrielnz.workshopmongodb.dto.UserDTO;
 import com.gabrielnz.workshopmongodb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,5 +21,10 @@ public class UserController {
         List<User> list = userService.findAll();
         List<UserDTO> userDTOList = list.stream().map(x -> new UserDTO(x)).toList();
         return ResponseEntity.ok().body(userDTOList);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> findById(@PathVariable String id) {
+        return ResponseEntity.ok().body(new UserDTO(userService.findById(id)));
     }
 }
