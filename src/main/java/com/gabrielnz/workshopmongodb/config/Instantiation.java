@@ -3,6 +3,7 @@ package com.gabrielnz.workshopmongodb.config;
 import com.gabrielnz.workshopmongodb.domain.Post;
 import com.gabrielnz.workshopmongodb.domain.User;
 import com.gabrielnz.workshopmongodb.dto.AuthorDTO;
+import com.gabrielnz.workshopmongodb.dto.CommentDTO;
 import com.gabrielnz.workshopmongodb.repository.PostRepository;
 import com.gabrielnz.workshopmongodb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,16 @@ public class Instantiation implements CommandLineRunner {
         postRepository.deleteAll();
         postRepository.saveAll(Arrays.asList(post1,post1));
 
+        CommentDTO comment1 = new CommentDTO("Boa viagem mano!", LocalDate.now(), new AuthorDTO(alex));
+        CommentDTO comment2 = new CommentDTO("Aproveita", LocalDate.now(), new AuthorDTO(bob));
+        CommentDTO comment3 = new CommentDTO("Tenha um otimo dia!", LocalDate.now(), new AuthorDTO(alex));
+
+        post1.getComments().addAll(Arrays.asList(comment1,comment2));
+        post2.getComments().add(comment3);
+
+        postRepository.saveAll(Arrays.asList(post1,post2));
+
         maria.getPosts().addAll(Arrays.asList(post1,post2));
+        userRepository.save(maria);
     }
 }

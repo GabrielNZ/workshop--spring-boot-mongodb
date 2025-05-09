@@ -1,20 +1,25 @@
 package com.gabrielnz.workshopmongodb.domain;
 
 import com.gabrielnz.workshopmongodb.dto.AuthorDTO;
+import com.gabrielnz.workshopmongodb.dto.CommentDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Document
 public class Post {
     @Id
-    public String id;
-    public LocalDate date;
-    public String title;
-    public String body;
-    public AuthorDTO author;
+    private String id;
+    private LocalDate date;
+    private String title;
+    private String body;
+    private AuthorDTO author;
+
+    private List<CommentDTO> comments = new ArrayList<>();
 
     public Post(Post byId){
 
@@ -26,6 +31,14 @@ public class Post {
         this.title = title;
         this.body = body;
         this.author = author;
+    }
+
+    public List<CommentDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentDTO> comments) {
+        this.comments = comments;
     }
 
     public String getId() {
