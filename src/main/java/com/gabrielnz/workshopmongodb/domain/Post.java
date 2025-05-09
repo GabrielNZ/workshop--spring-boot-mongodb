@@ -1,5 +1,6 @@
 package com.gabrielnz.workshopmongodb.domain;
 
+import com.gabrielnz.workshopmongodb.dto.AuthorDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,13 +14,13 @@ public class Post {
     public LocalDate date;
     public String title;
     public String body;
-    public User author;
+    public AuthorDTO author;
 
     public Post(){
 
     }
 
-    public Post(String id, LocalDate date, String title, String body, User author) {
+    public Post(String id, LocalDate date, String title, String body, AuthorDTO author) {
         this.id = id;
         this.date = date;
         this.title = title;
@@ -55,11 +56,11 @@ public class Post {
         this.body = body;
     }
 
-    public User getAuthor() {
+    public AuthorDTO getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(AuthorDTO author) {
         this.author = author;
     }
 
