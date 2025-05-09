@@ -16,7 +16,7 @@ public class Post {
     public String body;
     public AuthorDTO author;
 
-    public Post(){
+    public Post(Post byId){
 
     }
 
