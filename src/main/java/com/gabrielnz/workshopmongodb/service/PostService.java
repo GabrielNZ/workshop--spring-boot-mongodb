@@ -1,7 +1,6 @@
 package com.gabrielnz.workshopmongodb.service;
 
 import com.gabrielnz.workshopmongodb.domain.Post;
-import com.gabrielnz.workshopmongodb.domain.User;
 import com.gabrielnz.workshopmongodb.repository.PostRepository;
 import com.gabrielnz.workshopmongodb.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +19,8 @@ public class PostService {
 
     public Post findById(String id) {
         return postRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("User not found"));
+    }
+    public List<Post> findByTitle(String text) {
+        return postRepository.findByTitleContainingIgnoreCase(text);
     }
 }

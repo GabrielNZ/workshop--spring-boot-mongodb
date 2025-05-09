@@ -21,7 +21,7 @@ public class Post {
 
     private List<CommentDTO> comments = new ArrayList<>();
 
-    public Post(Post byId){
+    public Post(){
 
     }
 
