@@ -1,5 +1,6 @@
 package com.gabrielnz.workshopmongodb.controller;
 
+import com.gabrielnz.workshopmongodb.domain.Post;
 import com.gabrielnz.workshopmongodb.domain.User;
 import com.gabrielnz.workshopmongodb.dto.UserDTO;
 import com.gabrielnz.workshopmongodb.service.UserService;
@@ -41,5 +42,10 @@ public class UserController {
     @PutMapping
     public ResponseEntity<User> update(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok().body(userService.update(userDTO));
+    }
+
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<Post>> findPost(@PathVariable String id) {
+        return ResponseEntity.ok().body(userService.findById(id).getPosts());
     }
 }
