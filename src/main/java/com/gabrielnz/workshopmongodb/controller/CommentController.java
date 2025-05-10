@@ -1,8 +1,9 @@
 package com.gabrielnz.workshopmongodb.controller;
 
 import com.gabrielnz.workshopmongodb.domain.Post;
-import com.gabrielnz.workshopmongodb.dto.AuthorDTO;
+import com.gabrielnz.workshopmongodb.dto.CommentDTO;
 import com.gabrielnz.workshopmongodb.service.PostService;
+import com.gabrielnz.workshopmongodb.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,37 +11,31 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/posts")
-public class PostController {
-
+public class CommentController {
     @Autowired
-    private PostService postService;
+    PostService postService;
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{id}")
-    public ResponseEntity<Post> findById(@PathVariable String id) {
-        return ResponseEntity.ok().body(postService.findById(id));
+    public ResponseEntity<List<CommentDTO>> findByPost(@PathVariable String id) {
+        if (postService.findById(id) == null) throw new ObjectNotFoundException("Post not found");
+        return ResponseEntity.ok().body(postService.findById(id).getComments());
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @GetMapping("titlesearch")
-    public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text",defaultValue = "") String text) {
-        List<Post> list = postService.findByTitle(text);
-        return ResponseEntity.ok().body(list);
-    }
-
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @PostMapping
-    public ResponseEntity<Post> create(@RequestBody Post post, AuthorDTO author) {
-        post.setAuthor(author);
+    @PostMapping("/{id}")
+    public ResponseEntity<Post> create(@PathVariable String id, CommentDTO commentDTO) {
+        if (postService.findById(id) == null) throw new ObjectNotFoundException("Post not found");
+        Post post = postService.findById(id);
+        post.getComments().add(commentDTO);
         return ResponseEntity.ok().body(postService.save(post));
     }
 
     @PreAuthorize("@postService.isOwner(#postId, authentication.principal.id) or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
-        postService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable String id, CommentDTO commentDTO) {
+        if (postService.findById(id) == null) throw new ObjectNotFoundException("Post not found");
+        postService.findById(id).getComments().remove(commentDTO);
         return ResponseEntity.noContent().build();
     }
 
