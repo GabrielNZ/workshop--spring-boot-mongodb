@@ -1,6 +1,7 @@
 package com.gabrielnz.workshopmongodb.config;
 
 import com.gabrielnz.workshopmongodb.domain.Post;
+import com.gabrielnz.workshopmongodb.domain.Roles;
 import com.gabrielnz.workshopmongodb.domain.User;
 import com.gabrielnz.workshopmongodb.dto.AuthorDTO;
 import com.gabrielnz.workshopmongodb.dto.CommentDTO;
@@ -23,9 +24,9 @@ public class Instantiation implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        User maria = new User(null, "Maria Brown","123456", "maria@gmail.com");
-        User alex = new User(null, "Alex Green","123456", "alex@gmail.com");
-        User bob = new User(null, "Bob Grey","123456", "bob@gmail.com");
+        User maria = new User(null, "Maria Brown","123456", "maria@gmail.com", Roles.USER);
+        User alex = new User(null, "Alex Green","123456", "alex@gmail.com",Roles.USER);
+        User bob = new User(null, "Bob Grey","123456", "bob@gmail.com",Roles.USER);
 
         userRepository.deleteAll();
         userRepository.saveAll(Arrays.asList(maria,alex,bob));

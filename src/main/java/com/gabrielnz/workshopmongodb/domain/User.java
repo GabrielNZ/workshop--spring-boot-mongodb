@@ -3,18 +3,23 @@ package com.gabrielnz.workshopmongodb.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 @Document
-public class User {
+public class User implements UserDetails {
     @Id
     private String id;
     private String name;
     private String password;
     private String email;
+    private Roles role;
 
     @DBRef(lazy = true)
     private List<Post> posts = new ArrayList<>();
@@ -23,11 +28,29 @@ public class User {
 
     }
 
-    public User(String id, String name, String password, String email) {
+    public User(String id, String name, String password, String email, Roles role) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.email = email;
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == Roles.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        }else{
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+    }
+
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
     }
 
     public String getId() {
@@ -42,8 +65,15 @@ public class User {
         this.name = name;
     }
 
+
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
     }
 
     public void setPassword(String password) {

@@ -1,5 +1,6 @@
 package com.gabrielnz.workshopmongodb.service;
 
+import com.gabrielnz.workshopmongodb.domain.Roles;
 import com.gabrielnz.workshopmongodb.domain.User;
 import com.gabrielnz.workshopmongodb.dto.UserDTO;
 import com.gabrielnz.workshopmongodb.repository.UserRepository;
@@ -25,7 +26,7 @@ public class UserService {
     }
 
     public User save(UserDTO userDTO) {
-        User user = new User(userDTO.getId(), userDTO.getName(),userDTO.getPassword(),userDTO.getEmail());
+        User user = new User(userDTO.getId(), userDTO.getName(),userDTO.getPassword(),userDTO.getEmail(), Roles.USER);
         return userRepository.save(user);
     }
 
@@ -40,7 +41,7 @@ public class UserService {
         if(userRepository.findById(userDTO.getId()).isEmpty()){
          throw new ObjectNotFoundException("User not found for update");
         }else {
-            User user = new User(userDTO.getId(), userDTO.getName(), userDTO.getPassword(), userDTO.getEmail());
+            User user = new User(userDTO.getId(), userDTO.getName(), userDTO.getPassword(), userDTO.getEmail(),Roles.USER);
             return userRepository.save(user);
         }
     }
