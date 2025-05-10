@@ -25,6 +25,13 @@ public class Post {
 
     }
 
+    public Post(String id, LocalDate date, String title, String body) {
+        this.id = id;
+        this.date = date;
+        this.title = title;
+        this.body = body;
+    }
+
     public Post(String id, LocalDate date, String title, String body, AuthorDTO author) {
         this.id = id;
         this.date = date;
